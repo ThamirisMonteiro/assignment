@@ -1,6 +1,5 @@
 let accounts = [];
-let accountId = 0;
-accounts.push({ id: 100, balance: 0 });
+accounts.push({ id: 100, balance: 20 });
 accounts.push({ id: 101, balance: 10 });
 
 async function getBalance(id) {
@@ -22,13 +21,21 @@ async function postEvent(event) {
       else {
         accounts = accounts.filter(acc => acc.id != dest);
         account.balance = account.balance + amount;
-        const destination = account;
-        accounts.push(destination);
-        return { destination };
+        accounts.push(account);
+        return { destination: account };
       }
     case "withdraw":
-      const { origin } = event;
-      break;
+      const orig = event.origin;
+      const acct = accounts.find((acc) => acc.id === parseInt(orig));
+      if (typeof (acct) == "undefined") {
+        return 0;
+      }
+      else {
+        accounts = accounts.filter(acc => acc.id != orig);
+        acct.balance = acct.balance - amount;
+        accounts.push(acct);
+        return { origin: acct };
+      }
     case "transfer":
       break;
   }

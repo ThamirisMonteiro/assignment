@@ -15,7 +15,7 @@ router.post('/event', async (req, res) => {
   try {
     res.status(201).send(await postEvent(req.body));
   } catch (err) {
-    res.status(400);
+    res.status(404).send("0");
   }
 });
 
