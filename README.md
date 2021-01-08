@@ -1,4 +1,4 @@
 Hi!
 
-This is my take on the Junior Software Engineer assignment.
+This is my solution for the Junior Software Engineer assignment.
 
