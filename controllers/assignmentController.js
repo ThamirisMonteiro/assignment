@@ -20,9 +20,11 @@ async function postEvent(event) {
         return { destination };
       }
       else {
-
+        accounts = accounts.filter(acc => acc.id != dest);
+        account.balance = account.balance + amount;
+        accounts.push(account);
+        return { account };
       }
-      return account;
     case "withdraw":
       const { origin } = event;
       break;
