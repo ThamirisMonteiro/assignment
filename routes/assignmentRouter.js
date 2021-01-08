@@ -13,7 +13,7 @@ router.get('/balance', async (req, res) => {
 
 router.post('/event', async (req, res) => {
   try {
-    res.send(await postEvent(req.body));
+    res.status(201).send(await postEvent(req.body));
   } catch (err) {
     res.status(400);
   }
