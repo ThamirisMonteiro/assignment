@@ -1,5 +1,5 @@
 import express from 'express';
-import { getBalance, postEvent } from '../controllers/assignmentController.js';
+import { getBalance, postEvent, resetAccounts } from '../controllers/assignmentController.js';
 
 const router = express.Router();
 
@@ -17,6 +17,11 @@ router.post('/event', async (req, res) => {
   } catch (err) {
     res.status(400);
   }
+});
+
+router.post('/reset', async (_, res) => {
+  resetAccounts();
+  res.status(200).send();
 });
 
 export default router;

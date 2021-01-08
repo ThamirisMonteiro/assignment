@@ -1,4 +1,4 @@
-const accounts = [];
+let accounts = [];
 accounts.push({ id: 100, balance: 0 });
 accounts.push({ id: 101, balance: 10 });
 
@@ -22,7 +22,12 @@ async function postEvent(event) {
   }
 }
 
+async function resetAccounts() {
+  accounts = [];
+}
+
 export {
   getBalance,
-  postEvent
+  postEvent,
+  resetAccounts
 };
