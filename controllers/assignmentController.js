@@ -1,8 +1,10 @@
 let accounts = [];
 
 async function getBalance(id) {
-  const account = accounts.find((acc) => acc.id === parseInt(id));
-  return account.balance;
+  const a = accounts.find((acc) => acc.id == id);
+  console.log(a);
+  const account = accounts.find((acc) => acc.id == id);
+  return JSON.stringify(account.balance);
 }
 
 async function postEvent(event) {
@@ -10,9 +12,9 @@ async function postEvent(event) {
   switch (type) {
     case "deposit":
       const dest = event.destination;
-      const account = accounts.find((acc) => acc.id === parseInt(dest));
+      const account = accounts.find((acc) => acc.id === dest);
       if (typeof (account) == "undefined") {
-        const destination = { id: parseInt(dest), balance: amount };
+        const destination = { id: dest, balance: amount };
         accounts.push(destination);
         return { destination };
       }
@@ -24,7 +26,7 @@ async function postEvent(event) {
       }
     case "withdraw":
       let orig = event.origin;
-      const acct = accounts.find((acc) => acc.id === parseInt(orig));
+      const acct = accounts.find((acc) => acc.id === orig);
       if (typeof (acct) == "undefined") {
         return 0;
       }
@@ -37,8 +39,8 @@ async function postEvent(event) {
     case "transfer":
       const newOrigin = event.origin;
       const newDestination = event.destination;
-      const acc = accounts.find((a) => a.id === parseInt(newOrigin));
-      const accDest = accounts.find((a) => a.id === parseInt(newDestination));
+      const acc = accounts.find((a) => a.id === newOrigin);
+      const accDest = accounts.find((a) => a.id === newDestination);
       if (typeof (acc) == "undefined") {
         return 0;
       }
@@ -47,14 +49,12 @@ async function postEvent(event) {
         accounts = accounts.filter(acc => acc.id != newOrigin);
         accounts.push(acc);
         if (typeof (accDest) == "undefined") {
-          const newDest = { id: parseInt(newDestination), balance: amount };
+          const newDest = { id: newDestination, balance: amount };
           accounts.push(newDest);
           return { origin: acc, destination: newDest };
         }
         else {
-          console.log("caiu no else");
           accounts = accounts.filter(acc => acc.id != newDestination);
-          console.log(accounts);
           accDest.balance = accDest.balance + amount;
           accounts.push(accDest);
           return { origin: acc, destination: accDest };
