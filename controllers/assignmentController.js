@@ -1,6 +1,4 @@
 let accounts = [];
-accounts.push({ id: 100, balance: 20 });
-accounts.push({ id: 101, balance: 10 });
 
 async function getBalance(id) {
   const account = accounts.find((acc) => acc.id === parseInt(id));
@@ -61,7 +59,6 @@ async function postEvent(event) {
           accounts.push(accDest);
           return { origin: acc, destination: accDest };
         }
-
       }
   }
 }
