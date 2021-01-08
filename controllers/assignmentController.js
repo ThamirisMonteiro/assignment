@@ -25,7 +25,7 @@ async function postEvent(event) {
         return { destination: account };
       }
     case "withdraw":
-      const orig = event.origin;
+      let orig = event.origin;
       const acct = accounts.find((acc) => acc.id === parseInt(orig));
       if (typeof (acct) == "undefined") {
         return 0;
@@ -37,7 +37,32 @@ async function postEvent(event) {
         return { origin: acct };
       }
     case "transfer":
-      break;
+      const newOrigin = event.origin;
+      const newDestination = event.destination;
+      const acc = accounts.find((a) => a.id === parseInt(newOrigin));
+      const accDest = accounts.find((a) => a.id === parseInt(newDestination));
+      if (typeof (acc) == "undefined") {
+        return 0;
+      }
+      else {
+        acc.balance = acc.balance - amount;
+        accounts = accounts.filter(acc => acc.id != newOrigin);
+        accounts.push(acc);
+        if (typeof (accDest) == "undefined") {
+          const newDest = { id: parseInt(newDestination), balance: amount };
+          accounts.push(newDest);
+          return { origin: acc, destination: newDest };
+        }
+        else {
+          console.log("caiu no else");
+          accounts = accounts.filter(acc => acc.id != newDestination);
+          console.log(accounts);
+          accDest.balance = accDest.balance + amount;
+          accounts.push(accDest);
+          return { origin: acc, destination: accDest };
+        }
+
+      }
   }
 }
 
